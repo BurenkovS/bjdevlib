@@ -13,7 +13,7 @@
 
 //third-party LCD library
 //you can use any other library.
-#include "lcdlib/lcd_lib.h"
+#include "lcd_lib.h"
 
 #include <avr/io.h>
 #include <util/delay.h>
