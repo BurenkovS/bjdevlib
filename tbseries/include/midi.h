@@ -45,6 +45,19 @@ void midiSendControlChange(uint8_t ctrlNum, uint8_t val, uint8_t chanNum);
 void midiSendSysEx(uint16_t length, uint8_t* data);
 
 /*
+ * @brief	Send system exclusive midi message with manufacturer id.  
+ *			Start byte (F0 hex) and an end byte (F7 hex) will automatically included and should not passed in payload 
+ * @param	manfId - 3 byte format manufacturer id
+ *			Most significant byte [31:25] will ignored
+ *			[24:16] - manufacturer id byte 1
+ *			[15:8] - manufacturer id byte 2
+ *			[7:0] - manufacturer id byte 3
+ * @param	length - data length without manufacturer id
+ * @param	data - payload  without manufacturer id
+ */
+void midiSendSysExManfId(uint32_t manfId, uint16_t length, uint8_t* data);
+
+/*
  * @brief	Read UART buffer and check midi messages. 
  *			Should be invoked in main loop. Running status is not supported in this version,
  *			running status messages will ignored!!
@@ -98,14 +111,28 @@ uint8_t midiGetControllerNumber();
 uint8_t midiGetControllerValue();
 
 /*
- * @return	System exclusive payload length
+ * @return	System exclusive payload length from any SysEx message
 */
-uint8_t midiGetSysExLength();
+uint16_t midiGetSysExLength(uint8_t* sysEx);
+
+/*
+ * @return	System exclusive payload length from last SysEx message
+*/
+uint16_t midiGetLastSysExLength();
 
 /*
  * @return	Pointer to system exclusive payload data
 */
 uint8_t* midiGetSysExData();
+
+/*
+ * @return	3 byte format manufacturer id from SysEx message. 
+ * 			Most significant byte in return value is always 0,
+ *			[24:16] - manufacturer id byte 1
+ *			[15:8] - manufacturer id byte 2
+ *			[7:0] - manufacturer id byte 3
+ */
+uint32_t midiGetSysExManufacturerId(uint8_t* sysEx);
 
 
 //Midi statuses
@@ -114,6 +141,8 @@ uint8_t* midiGetSysExData();
 #define CC_STATUS		0xB0 //Control change midi message status
 #define SYSEX_STATUS	0xF0 //System exclusive
 #define ACTIVE_SENSE	0xE0 //Active sense
+
+#define SYSEX_END		0xF7 //End of System exclusive message
 
 //midi buffer size in bytes
 #define MIDI_BUFFER_SIZE	256

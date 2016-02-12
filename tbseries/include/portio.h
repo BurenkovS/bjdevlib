@@ -55,6 +55,5 @@ void initInput(const ioPort *input, uint8_t pullup);
  * @brief	Get value from input port
  */
 uint8_t inputGet(const ioPort *out);
-//uint8_t inputGet(int8_t pin, volatile uint8_t* port);
 
 #endif /* portio_h_ */

@@ -35,7 +35,33 @@ void midiSendControlChange(uint8_t ctrlNum, uint8_t val, uint8_t chanNum)
 
 void midiSendSysEx(uint16_t length, uint8_t* data)
 {
+	uint32_t i;
 	
+	uart0PutChar(SYSEX_STATUS);
+	
+	for (i = 0; i < length; ++i)
+	{
+		uart0PutChar(*(data + i));	
+	}
+	
+	uart0PutChar(0xF7);
+}
+
+void midiSendSysExManfId(uint32_t manfId, uint16_t length, uint8_t* data)
+{
+	uint32_t i;
+	
+	uart0PutChar(SYSEX_STATUS);
+	
+	uart0PutChar((manfId >> 16) & 0x7F);
+	uart0PutChar((manfId >> 8) & 0x7F);
+	uart0PutChar(manfId & 0x7F);
+	
+	for (i = 0; i < length; ++i)
+	{
+		uart0PutChar(*(data + i));
+	}
+	uart0PutChar(0xF7);
 }
 
 uint8_t getMessageLength(uint8_t messageType)
@@ -209,7 +235,17 @@ uint8_t midiGetControllerValue()
 	return midiBuffer[2];
 }
 
-uint8_t midiGetSysExLength()
+uint16_t midiGetSysExLength(uint8_t* sysEx)
+{
+	uint16_t length = 0;
+	
+	while(*(sysEx + length) != SYSEX_END)
+		++length;
+		
+	return length;
+}
+
+uint16_t midiGetLastSysExLength()
 {
 	return lastSysExLength;
 }
@@ -222,4 +258,9 @@ uint8_t* midiGetSysExData()
 uint8_t midiGetMessageType()
 {
 	return (midiBuffer[0] & 0xF0);
+}
+
+uint32_t midiGetSysExManufacturerId(uint8_t* sysEx)
+{
+	return (*((uint32_t*)sysEx) && 0xFFFFFF);
 }

@@ -15,12 +15,12 @@
 
 #include <stdint.h>
 /*
- * @brief Timer initialization
+ * @brief	Timer initialization
  */
 void initTimer();
 
 /*
- * @brief get timer ticks since last reset
+ * @brief	Get timer ticks since last reset
  */
 uint32_t getTicks();
 
