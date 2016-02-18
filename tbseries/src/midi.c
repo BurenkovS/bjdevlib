@@ -69,19 +69,19 @@ uint8_t getMessageLength(uint8_t messageType)
 	switch(messageType)
 	{
 		case PC_STATUS :
-		return 2;
+			return 2;
 		break;
 		
 		case CC_STATUS :
-		return 3;
+			return 3;
 		break;
 		
 		case ACTIVE_SENSE :
-		return 1;
+			return 1;
 		break;
 		
 		default:
-		return 0;//return 0 if length is unknown
+			return 0;//return 0 if length is unknown
 		break;
 	}
 
@@ -102,26 +102,27 @@ bool parce(uint8_t data)
 			case PC_STATUS :
 			case CC_STATUS	:
 			case SYSEX_STATUS :
-			midiBuffer[midiInRxCnt++] = data;
-			lastStatus = data & 0xF0;
-			return false;
+				midiBuffer[midiInRxCnt++] = data;
+				lastStatus = data & 0xF0;
+				return false;
 			break;
 
 			case ACTIVE_SENSE :
-			midiBuffer[midiInRxCnt] = data;
-			lastStatus = data & 0xF0;
-			return true;
+				midiBuffer[midiInRxCnt] = data;
+				lastStatus = data & 0xF0;
+				return true;
 			break;
 			
 			default:
-			lastStatus = UNKNOWN_STATUS;
-			return false;
+				lastStatus = UNKNOWN_STATUS;
+				return false;
 			break;
 		}
 	}
 	else
 	{
-		if (data & 0x80) //MSB must be 0 inside the message, error if not
+		//MSB must be 0 inside the message if it is not end of SysEx message
+		if ((data & 0x80) && (data != SYSEX_END))
 		{
 			midiInRxCnt = 0;//start waiting new valid message
 			lastStatus = UNKNOWN_STATUS;
@@ -132,24 +133,24 @@ bool parce(uint8_t data)
 		{
 			case PC_STATUS :
 			case CC_STATUS	:
-			midiBuffer[midiInRxCnt++] = data;
-			if(midiInRxCnt == getMessageLength(lastStatus))//if end of message reached
-			{
-				midiInRxCnt = 0;
-				lastStatus = UNKNOWN_STATUS;
-				return true;
-			}
+				midiBuffer[midiInRxCnt++] = data;
+				if(midiInRxCnt == getMessageLength(lastStatus))//if end of message reached
+				{
+					midiInRxCnt = 0;
+					lastStatus = UNKNOWN_STATUS;
+					return true;
+				}
 			break;
 			
 			case SYSEX_STATUS :
-			midiBuffer[midiInRxCnt++] = data;
-			if(data == 0x7F)//End of sys ex
-			{
-				lastSysExLength = midiInRxCnt;
-				midiInRxCnt = 0;
-				lastStatus = UNKNOWN_STATUS;
-				return true;
-			}
+				midiBuffer[midiInRxCnt++] = data;
+				if(data == SYSEX_END)//End of sys ex
+				{
+					lastSysExLength = midiInRxCnt;
+					midiInRxCnt = 0;
+					lastStatus = UNKNOWN_STATUS;
+					return true;
+				}
 			break;
 
 			default:
@@ -250,7 +251,7 @@ uint16_t midiGetLastSysExLength()
 	return lastSysExLength;
 }
 
-uint8_t* midiGetSysExData()
+uint8_t* midiGetLastSysExData()
 {
 	return midiBuffer;
 }
@@ -262,5 +263,7 @@ uint8_t midiGetMessageType()
 
 uint32_t midiGetSysExManufacturerId(uint8_t* sysEx)
 {
-	return (*((uint32_t*)sysEx) && 0xFFFFFF);
+	uint32_t ret = 0;
+	ret = ((uint32_t)sysEx[1] << 16) | ((uint32_t)sysEx[2] << 8) | sysEx[3]; 
+	return ret;
 }

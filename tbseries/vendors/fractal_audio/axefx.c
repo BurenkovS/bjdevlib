@@ -23,9 +23,36 @@ static const uint8_t fuctionPayloadOffsetBytes PROGMEM = 6;
 //other constants
 static const uint8_t effectBlockSize PROGMEM = 5;
 
+static uint8_t getChecksum(uint8_t* array, uint16_t size)
+{
+	uint16_t i;
+	uint8_t ckecksum = 0;
+	
+	ckecksum ^= SYSEX_STATUS;
+	ckecksum ^= (uint8_t)FRACTAL_AUDIO_MANF_ID;
+	ckecksum ^= (uint8_t)((uint32_t)FRACTAL_AUDIO_MANF_ID >> 8);
+	ckecksum ^= (uint8_t)((uint32_t)FRACTAL_AUDIO_MANF_ID >> 16);
+	
+	for (i = 0; i < size; ++i)
+		ckecksum ^= *(array + i);
+	
+	ckecksum &= 0x7f;
+	
+	return ckecksum; 
+}
+
 void axefxSendFunctionRequest(AxeFxModelId modelId, AxeFxFunctionId functionId, uint8_t* payload, uint16_t payloadLength)
 {
-	
+	uint16_t messageSize = 3 + payloadLength;//total length is payloadLength + 1 byte modelId + 1 byte functionId + 1 byte checksumm
+	uint8_t messageToSend[messageSize];
+	//fill message
+	messageToSend[0] = (uint8_t)modelId;
+	messageToSend[1] = (uint8_t)functionId;
+	if(payload != NULL && payloadLength != 0)
+		memcpy((void*)(messageToSend + 2), payload, payloadLength);
+		
+	messageToSend[messageSize - 1] = getChecksum(messageToSend, messageSize - 1);//last byte is a checksum	
+	midiSendSysExManfId(FRACTAL_AUDIO_MANF_ID, messageSize, messageToSend);
 }
 
 void axefxParseTunerInfo(AxeFxEffectTunerInfo* tunerInfo, uint8_t* sysEx)
@@ -40,20 +67,20 @@ bool axeFxCheckFractalManufId(uint8_t* sysEx)
 
 AxeFxModelId axeFxGetModelId(uint8_t* sysEx)
 {
-	return (AxeFxModelId)(sysEx + pgm_read_byte(&modelIdOffsetBytes));
+	return (AxeFxModelId)(*(sysEx + pgm_read_byte(&modelIdOffsetBytes)));
 }
 
 AxeFxFunctionId axeFxGetFunctionId(uint8_t* sysEx)
 {
-	return (AxeFxFunctionId)(sysEx + pgm_read_byte(&functionIdOffsetBytes));
+	return (AxeFxFunctionId)(*(sysEx + pgm_read_byte(&functionIdOffsetBytes)));
 }
 
 uint8_t axefxGetEffectBlockStateNumber(uint8_t* sysEx)
 {
-	return (midiGetSysExLength(sysEx) - pgm_read_byte(&fuctionPayloadOffsetBytes))/ pgm_read_byte(&effectBlockSize);
+	return (midiGetSysExLength(sysEx) - pgm_read_byte(&fuctionPayloadOffsetBytes)) / pgm_read_byte(&effectBlockSize);
 }
 
-static void fillEffectBlockStructFromGen1(AxeFxEffectBlockState* structToFill, uint8_t* blockInSysEx)
+static void fillEffectBlockStructFromGen2(AxeFxEffectBlockState* structToFill, uint8_t* blockInSysEx)
 {
 	structToFill->isEnabled_ = ((blockInSysEx[0] & 0x01) == 0x00) ? false : true;
 	structToFill->isX_ = ((blockInSysEx[0] & 0x02) == 0x00) ? false : true;
@@ -61,7 +88,7 @@ static void fillEffectBlockStructFromGen1(AxeFxEffectBlockState* structToFill, u
 	structToFill->effectId_ = ((blockInSysEx[1] >> 3) | blockInSysEx[2] << 4) & 0x7F;
 }
 
-static void fillEffectBlockStructFromGen2(AxeFxEffectBlockState* structToFill,uint8_t* blockInSysEx)
+static void fillEffectBlockStructFromGen1(AxeFxEffectBlockState* structToFill,uint8_t* blockInSysEx)
 {
 		structToFill->isEnabled_ = (blockInSysEx[4] == 0x00) ? false : true;
 		structToFill->isX_ = false;//always false in gen1
@@ -69,11 +96,12 @@ static void fillEffectBlockStructFromGen2(AxeFxEffectBlockState* structToFill,ui
 		structToFill->effectId_ = blockInSysEx[0] | (blockInSysEx[1] << 4);
 }
 
+uint8_t totalBlocks;
 bool axefxGetSingleEffectBlockState(AxeFxEffectBlockState* blockState, uint8_t blockNum, uint8_t* sysEx)
 {
-	uint8_t totalBlocks = axefxGetEffectBlockStateNumber(sysEx);
+	totalBlocks = axefxGetEffectBlockStateNumber(sysEx);
 	
-	if(totalBlocks > blockNum)
+	if(blockNum > totalBlocks)//wrong block number is requested
 		return false;
 	
 	AxeFxModelId model = axeFxGetModelId(sysEx);
@@ -83,7 +111,7 @@ bool axefxGetSingleEffectBlockState(AxeFxEffectBlockState* blockState, uint8_t b
 	if(model == AXEFX_STANDARD_MODEL || model == AXEFX_ULTRA_MODEL)//check gen1 processor
 		fillEffectBlockStructFromGen1(blockState, sysEx + blockOffset);
 	else//if gen 2
-		fillEffectBlockStructFromGen2(blockState, sysEx+ blockOffset);
+		fillEffectBlockStructFromGen2(blockState, sysEx  + blockOffset);
 
 	return true;	
 }

@@ -123,7 +123,7 @@ uint16_t midiGetLastSysExLength();
 /*
  * @return	Pointer to system exclusive payload data
 */
-uint8_t* midiGetSysExData();
+uint8_t* midiGetLastSysExData();
 
 /*
  * @return	3 byte format manufacturer id from SysEx message. 
