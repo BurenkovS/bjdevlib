@@ -17,6 +17,7 @@
 #include "timer.h"
 #include "midi.h"
 #include "led.h"
+#include "expression.h"
 
 /*
  * @brief	System initialization 
