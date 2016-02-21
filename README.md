@@ -11,7 +11,7 @@ Library used third-party code for LCD display. You can use provided code, or add
 
 How to start:
 
-1. Download this library. You can save it in any convenient location on the disk
+1. Download this library. You should save it in your project dir
 
 2. Create new Atmel Studio project (GCC C Executable Project, ATmega64 device)
 

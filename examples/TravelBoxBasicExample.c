@@ -84,8 +84,6 @@ void updateScreen()
 	
 	//print string
 	lcd_string(presetToPrint, sizeof(presetToPrint));
-	
-	PRESET_NAME_MAX_SIZE
 }	
 
 void processPresetSwitching(uint8_t buttonNum)

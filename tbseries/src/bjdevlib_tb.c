@@ -18,5 +18,6 @@ void initBjDevLib()
 	initTimer();
 	initMidi();
 	initLed();
+	initExpression();
 	sei();
 } 

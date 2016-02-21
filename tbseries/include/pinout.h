@@ -88,6 +88,18 @@
 #define KEY_DOWN_PORT	PORTB
 #define KEY_DOWN_PIN	7
 
+//expression pedals pins
+#define EXP_P1_PORT	PORTF
+#define EXP_P1_PIN	3
+
+#define EXP_P2_PORT	PORTF
+#define EXP_P2_PIN	3
+
+#define EXP_P_OB_PORT	PORTF
+#define EXP_P_OB_PIN	6
+
+
+
 //On board LEDs shift register pin numbers
 #ifdef TB_12_DEVICE
 
