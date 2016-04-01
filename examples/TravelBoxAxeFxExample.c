@@ -1,6 +1,6 @@
 ﻿/*
  * BJ Devices Travel Box series midi controller library
- * @file	TravelBoxBasicExample.c
+ * @file	TravelBoxAxeFxExample.c
  * 
  * @brief	AxeFx example. Reading IA state and preset names from AxeFx
  *
@@ -15,7 +15,7 @@
 
 //third-party LCD library
 //you can use any other library.
-#include "lcd_lib.h"
+#include "lcd_tb.h"
 
 #include <avr/io.h>
 #include <util/delay.h>
@@ -81,21 +81,14 @@ void updateLeds()
 
 void updateScreen()
 {
-	uint8_t presetToPrint[3] = {0x20,0x20,0x20};
-	
 	//Usually guitar sound processors display preset numbers starting from 1, but internal number is still 0
 	//Convert integer to string 
-	itoa(presetNumbers[presetButtonNumber] + 1, (char*)presetToPrint, 10);
+	LCDWriteIntXY(9, 0, presetNumbers[presetButtonNumber] + 1, 3);
 	
-	//set cursor to preset number start position
-	lcd_gotoxy(9, 0);
-	//print string
-	lcd_string((uint8_t*)presetToPrint, sizeof(presetToPrint));
-	
-	//set cursor to preset name start position
-	lcd_gotoxy(0, 1);
-	//print string
-	lcd_string((uint8_t*)presetNameToPrint, strlen(presetNameToPrint));
+	//clear bottom string
+	LCDWriteStringXY(0, 1, "                ");
+	//print name
+	LCDWriteStringXY(0, 1, (const char*)presetNameToPrint);
 }	
 
 void processPresetSwitching(uint8_t buttonNum)
@@ -215,16 +208,15 @@ int main(void)
 	initBjDevLib();
 	
 	//third-party LCD library initialization
-	lcd_init();
-	_delay_ms(10);
-	lcd_clr();
-	lcd_home();
+	//third-party LCD library initialization
+	LCDInit(LS_ULINE);
+	LcdHideCursor();
 	
 	//register midi callback for SysEx messages
 	midiRegisterSysExCallback(sysExCallback);
 	
-	//put preset number to scree. It is a static title
-	lcd_string((uint8_t*)"Preset # ", sizeof("Preset # "));
+	//put  "Preset # " to screen. It is a static title
+	LCDWriteStringXY(0, 0, "Preset # ");
 	
 	updateLeds();
 	updateScreen();

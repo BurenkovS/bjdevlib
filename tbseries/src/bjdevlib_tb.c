@@ -14,6 +14,11 @@
 
 void initBjDevLib()
 {
+
+#ifdef LOG_ENABLED
+	initUart1(19200);
+	LOG(SEV_INFO, "Log enabled"); 
+#endif
 	initButtons();
 	initTimer();
 	initMidi();

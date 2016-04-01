@@ -13,6 +13,7 @@
 #ifndef bjdevlib_tb_h_
 #define bjdevlib_tb_h_
 
+#include "log.h"
 #include "button.h"
 #include "timer.h"
 #include "midi.h"

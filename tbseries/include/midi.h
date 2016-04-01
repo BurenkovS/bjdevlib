@@ -140,7 +140,7 @@ uint32_t midiGetSysExManufacturerId(uint8_t* sysEx);
 #define PC_STATUS		0xC0 //Program change midi message status
 #define CC_STATUS		0xB0 //Control change midi message status
 #define SYSEX_STATUS	0xF0 //System exclusive
-#define ACTIVE_SENSE	0xE0 //Active sense
+#define ACTIVE_SENSE	0xFE //Active sense
 
 #define SYSEX_END		0xF7 //End of System exclusive message
 

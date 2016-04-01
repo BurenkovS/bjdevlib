@@ -50,8 +50,10 @@
 #define RX_COMPLETE			(1<<RXC)
 
 // USART0 Receiver buffer
-#define RX_BUFFER_SIZE0 128
-
+// User can redefine this value
+#ifndef RX_BUFFER_SIZE0
+#	define RX_BUFFER_SIZE0 256
+#endif
 
 /*
  * @brief	USART0 init as midi port: baud 31250, 8 data, 1 stop, no parity, async mode
@@ -78,5 +80,27 @@ bool uart0IsBufferEmpty();
  * @param	resetOverflowFlag - reset overflow flag
  */
 bool uart0IsBufferOvefflow(bool resetOverflowFlag);
+
+/*
+ * @brief	USART1 init with variable baudrate
+ *			8 data, 1 stop, no parity, async mode	
+ * @param	baudrate - required baudrate
+ */
+void initUart1(uint32_t baudrate);
+
+/*
+ * @brief	Send byte to USART1
+ */
+void uart1PutChar(uint8_t data);
+
+/*
+ * @brief	Send null-terminated string to USART1
+ */
+void uart1PutString(char* str);
+
+/*
+ * @brief	Send null-terminated string from PRG_MEM to USART1
+ */
+void uart1PutStringP(const char* str);
 
 #endif /* uart_h_ */
