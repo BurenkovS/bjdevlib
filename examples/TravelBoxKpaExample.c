@@ -273,6 +273,7 @@ int main(void)
 	while(1)
 	{
 		//check buttons
+		
 		lastButtonEvent = getButtonLastEvent();
 		
 		//BUTTON_NO_EVENT if no any buttons action, so do nothing in this case, else process event
