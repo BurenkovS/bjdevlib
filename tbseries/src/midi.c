@@ -95,9 +95,10 @@ bool parce(uint8_t data)
 	if(midiInRxCnt == 0)
 	{
 		if(!(data & 0x80))
-		return false;//TODO add running status support here
+			return false;//TODO add running status support here
 		
-		switch (data & 0xF0)
+		uint8_t statusWoChannel = (data < 0xF0) ? (data & 0xF0) : data;//Save all byte in case of realtime message
+		switch (statusWoChannel)
 		{
 			case PC_STATUS :
 			case CC_STATUS	:
@@ -109,7 +110,7 @@ bool parce(uint8_t data)
 
 			case ACTIVE_SENSE :
 				midiBuffer[midiInRxCnt] = data;
-				lastStatus = data & 0xF0;
+				lastStatus = data;
 				return true;
 			break;
 			
@@ -137,7 +138,7 @@ bool parce(uint8_t data)
 				if(midiInRxCnt == getMessageLength(lastStatus))//if end of message reached
 				{
 					midiInRxCnt = 0;
-					lastStatus = UNKNOWN_STATUS;
+					//lastStatus = UNKNOWN_STATUS;
 					return true;
 				}
 			break;
@@ -148,7 +149,6 @@ bool parce(uint8_t data)
 				{
 					lastSysExLength = midiInRxCnt;
 					midiInRxCnt = 0;
-					lastStatus = UNKNOWN_STATUS;
 					return true;
 				}
 			break;
@@ -169,28 +169,28 @@ static void (*activeSenseCallback)(void);
 
 void runCallbacks() 
 {
-	if(ccCallback)
+	if(ccCallback && lastStatus == CC_STATUS)
 		(*ccCallback)(midiGetChannelNumber(), midiGetControllerNumber(), midiGetControllerValue());
 		
-	if(pcCallback)
+	if(pcCallback && lastStatus == PC_STATUS)
 		(*pcCallback)(midiGetChannelNumber(), midiGetProgramNumber());
 		
-	if(sysExCallback)
+	if(sysExCallback && lastStatus == SYSEX_STATUS)
 		(*sysExCallback)(lastSysExLength);
 		
-	if(activeSenseCallback)
+	if(activeSenseCallback && lastStatus == ACTIVE_SENSE)
 		(*activeSenseCallback)();
 }
 
 bool midiRead()
 {
-	if(uart0IsBufferEmpty())
-		return false;
-		
-	if(parce(uart0GetChar()))
+	while(!uart0IsBufferEmpty())
 	{
-		runCallbacks();
-		return true;
+		if(parce(uart0GetChar()))
+		{
+			runCallbacks();
+			return true;
+		}
 	}
 	return false;
 }

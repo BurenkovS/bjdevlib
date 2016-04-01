@@ -9,8 +9,10 @@
  */
 
 #include "uart.h"
+#include "log.h"
 
 #include <avr/interrupt.h>
+#include <avr/pgmspace.h>
 
 static uint8_t rxBuffer0[RX_BUFFER_SIZE0];
 
@@ -43,8 +45,8 @@ ISR(USART0_RX_vect)
 		// special case for receiver buffer size=256
 		if (++rxCounter0 == 0)
 			rxBufferOverflow0 = true;
-		
 		#else
+
 		if (rxWrIndex0 == RX_BUFFER_SIZE0)
 			rxWrIndex0 = 0;
 			
@@ -108,3 +110,46 @@ bool uart0IsBufferOvefflow(bool resetOverflowFlag)
 		
 	return ret;
 }
+
+//uart 2
+void initUart1(uint32_t baudrate)
+{
+	// Communication Parameters: 8 Data, 1 Stop, No Parity
+	// USART1 Receiver: On
+	// USART1 Transmitter: On
+	// USART1 Mode: Asynchronous
+	UCSR1A=0x00;
+	UCSR1B=0x98;
+	UCSR1C=0x06;
+	
+	uint32_t val;
+	val = (F_CPU)/(16*baudrate)-1;
+	UBRR1L = val & 0x00FF;
+	UBRR1H = val>>8;
+}
+
+void uart1PutChar(uint8_t data)
+{
+	while ((UCSR1A & DATA_REGISTER_EMPTY) == 0);
+	UDR1 = data;
+}
+
+void uart1PutString(char* str)
+{
+	while (0 != *str)
+	{
+		uart1PutChar(*str);
+		str++;
+	}
+}
+
+void uart1PutStringP(const char* str)
+{
+	char c;
+	while (0 != (c = pgm_read_byte(str)))
+	{
+		uart1PutChar(c);
+		str++;
+	}
+}
+
