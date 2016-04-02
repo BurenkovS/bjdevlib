@@ -81,7 +81,7 @@ void updateScreen()
 {
 
 	//Usually guitar sound processors display preset numbers starting from 1, but internal number is still 0
-	//Convert integer to string
+	//Print number
 	LCDWriteIntXY(9, 0, presetNumbers[presetButtonNumber] + 1, 3);
 	
 	//clear bottom string
@@ -152,7 +152,7 @@ void parseIaStates(KpaParamAddress addr, uint8_t* sysexData)
 	updateLeds();
 }
 
-//create callback for income sysex messages from axefx
+//create callback for income sysex messages from KPA
 void sysExCallback(uint16_t length)
 {
 	uint8_t* sysEx;//pointer to SysEx payload data
@@ -273,7 +273,6 @@ int main(void)
 	while(1)
 	{
 		//check buttons
-		
 		lastButtonEvent = getButtonLastEvent();
 		
 		//BUTTON_NO_EVENT if no any buttons action, so do nothing in this case, else process event
