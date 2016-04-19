@@ -33,4 +33,27 @@ You can also upload compiled hex file to hardware, check BJ devices TB-series ma
 
 9. Find bugs in library and report us. Improve library and send pull request! It is strongly welcome!
 
+How to debug:
+You able to send debug message to UART1. UART1 connects to COM-USB converter and you will able to see your messages on any PC terminal. LOG macro accept at least two parameters - log severity and formatted string, the same as printf() function.
 
+For example you can write following:
+LOG(SEV_INFO, "Value : %d", 2+3);
+and you will see following message in terminal:
+"INFO: Value : 5"
+
+Logger have 4 severity levels: SEV_TRACE = 0, SEV_INFO = 1, SEV_WARNING = 2, SEV_ERROR = 3
+If you turn on logger, you should specify severity level. All log messages with severity lower then specified will ingonred
+
+1. Define LOG ENABLED in predefined symbols. If LOG_ENABLED is defined, UART1 will initialize to 19200 baudrate
+
+2. Define log severity in predefined symbols, for example to set SEV_INFO level define LOG SEVERITY=1
+ 
+3. Add LOG messages in your code
+
+4. Connect USB port of midi controller to your PC. Drivers will install automatically. You can see "USB serial port" in the device
+
+5. manager -> COM ports. Open serial terminal and connect to nesessary com port
+
+5. Run your application and see messages in terminal
+
+6. After your projects is finished, you can remove LOG_ENABLED symbol, it reduce code size.
