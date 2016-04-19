@@ -38,8 +38,11 @@ How to debug:
 You able to send debug message to UART1. UART1 connects to COM-USB converter and you will able to see your messages on any PC terminal. LOG macro accept at least two parameters - log severity and formatted string, the same as printf() function.
 
 For example you can write following:
+
 LOG(SEV_INFO, "Value : %d", 2+3);
+
 and you will see following message in terminal:
+
 "INFO: Value : 5"
 
 Logger have 4 severity levels: SEV_TRACE = 0, SEV_INFO = 1, SEV_WARNING = 2, SEV_ERROR = 3
