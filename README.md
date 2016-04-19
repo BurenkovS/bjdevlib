@@ -34,6 +34,7 @@ You can also upload compiled hex file to hardware, check BJ devices TB-series ma
 9. Find bugs in library and report us. Improve library and send pull request! It is strongly welcome!
 
 How to debug:
+
 You able to send debug message to UART1. UART1 connects to COM-USB converter and you will able to see your messages on any PC terminal. LOG macro accept at least two parameters - log severity and formatted string, the same as printf() function.
 
 For example you can write following:
