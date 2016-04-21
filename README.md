@@ -19,9 +19,11 @@ How to start:
 add symbol TB_12_DEVICE or TB_5_DEVICE(depends of your model), add F_CPU=8000000UL symbol for all configurations
 
 4. Go to AVR/GNU C Compiler -> Directories, add include path for "bjdevib/tbseries/include" folder for all configuratoin
+
 4a. If you want to use same LCD library, as in example, add "lcdlib" to include path for all configurations
 
 5. In project explorer create folder "bjdevilib", add existing items - all files from "bjdevib/tbseries/src" folder
+
 5a. If you want to use same LCD library, also add "lcd_lib.c" from "lcdlib" folder
 
 6. Copy code from examples to your main file, compile it to make sure that everything is configured correctly. 
@@ -48,15 +50,13 @@ and you will see following message in terminal:
 Logger have 4 severity levels: SEV_TRACE = 0, SEV_INFO = 1, SEV_WARNING = 2, SEV_ERROR = 3
 If you turn on logger, you should specify severity level. All log messages with severity lower then specified will ingonred
 
-1. Define LOG ENABLED in predefined symbols. If LOG_ENABLED is defined, UART1 will initialize to 19200 baudrate
+1. Define LOG_ENABLED in predefined symbols. If LOG_ENABLED is defined, UART1 will initialize to 19200 baudrate
 
-2. Define log severity in predefined symbols, for example to set SEV_INFO level define LOG SEVERITY=1
+2. Define log severity in predefined symbols, for example to set SEV_INFO level define LOG_SEVERITY=1
  
 3. Add LOG messages in your code
 
-4. Connect USB port of midi controller to your PC. Drivers will install automatically. You can see "USB serial port" in the device
-
-5. manager -> COM ports. Open serial terminal and connect to nesessary com port
+4. Connect USB port of midi controller to your PC. Drivers will install automatically. You can see "USB serial port" in the device manager -> COM ports. Open serial terminal and connect to nesessary com port
 
 5. Run your application and see messages in terminal
 
