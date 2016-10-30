@@ -20,13 +20,23 @@ static const uint8_t ledsNumTable[TOTAL_LED_PINS] PROGMEM =
 		
 #elif defined (TB_11P_DEVICE)
 static const uint8_t ledsNumTable[TOTAL_LED_PINS] PROGMEM = 
-		{LED1_G, LED1_R, LED2_G, LED2_R, LED3_G, LED3_R, LED4_G, LED4_R, LED5_G, LED5_R, LED6_G, LED6_R,
-		LED7_G, LED7_R, LED8_G, LED8_R, LED9_G, LED9_R, LED10_G, LED10_R, LED11_G, LED11_R};
-
+		{LED1_G, LED1_R, LED2_G, LED2_R, LED3_G, LED3_R, LED5_G, LED5_R, LED6_G, LED6_R , LED7_G, LED7_R
+		,LED8_G, LED8_R, LED9_G, LED9_R, LED10_G, LED10_R, LED11_G, LED11_R
+		,LED4_G, LED4_R};//Dummy leds
 
 #elif defined (TB_5_DEVICE)
 static const uint8_t ledsNumTable[TOTAL_LED_PINS] PROGMEM = 
-		{LED1_G, LED1_R, LED2_G, LED2_R, LED3_G, LED3_R, LED4_G, LED4_R, LED5_G, LED5_R};
+		{LED1_G, LED1_R, LED2_G, LED2_R, LED3_G, LED3_R, LED6_G, LED6_R, LED4_G, LED4_R};
+
+#elif defined (TB_6P_DEVICE)
+		static const uint8_t ledsNumTable[TOTAL_LED_PINS] PROGMEM =
+		{LED1_G, LED1_R, LED2_G, LED2_R, LED3_G, LED3_R, LED6_G, LED6_R, LED4_G, LED4_R
+		,LED8_G, LED8_R};//Dummy leds
+
+#elif defined (TB_8_DEVICE)
+		static const uint8_t ledsNumTable[TOTAL_LED_PINS] PROGMEM =
+		{LED2_G, LED2_R, LED3_G, LED3_R, LED5_G, LED5_R, LED6_G, LED6_R, LED7_G, LED7_R
+		,LED8_G, LED8_R, LED10_G, LED10_R, LED11_G, LED11_R};
 
 #endif
 

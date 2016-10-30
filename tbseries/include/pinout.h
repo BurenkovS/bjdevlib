@@ -8,7 +8,6 @@
 			Following devices are supported
 			TB_12_DEVICE  - TB-12 midi controller
 			TB_5_DEVICE  - TB-5 midi controller
-			//TODO add following
 			TB_8_DEVICE  - TB-8 midi controller
 			TB_11P_DEVICE  - TB-11P midi controller with expression pedal on board
 			TB_6P_DEVICE  - TB-6P midi controller with expression pedal on board
@@ -25,8 +24,21 @@
 //Buttons
 
 #ifdef TB_12_DEVICE
+#	define FOOT_BUTTONS_NUM	12
 
-#define FOOT_BUTTONS_NUM	12
+#elif defined (TB_11P_DEVICE)
+#	define FOOT_BUTTONS_NUM	11
+
+#elif defined (TB_6P_DEVICE)
+#	define FOOT_BUTTONS_NUM	6
+
+#elif defined (TB_8_DEVICE)
+#	define FOOT_BUTTONS_NUM	8
+
+#elif defined (TB_5_DEVICE)
+#	define FOOT_BUTTONS_NUM	5
+#endif 
+
 #define CONF_BUTTONS_NUM	6
 
 #define KEY_1_PORT	PORTA
@@ -65,9 +77,9 @@
 #define KEY_12_PORT	PORTD
 #define KEY_12_PIN	5
 
-#endif //TB_12_DEVICE
+#define KEY_UNDER_PEDAL_PORT	PORTB
+#define KEY_UNDER_PEDAL_PIN		5
 
-//TODO add all others devices
 
 //Common for all models
 #define KEY_INC_PORT	PORTG
@@ -101,8 +113,6 @@
 
 
 //On board LEDs shift register pin numbers
-#ifdef TB_12_DEVICE
-
 #define LED1_R	6 
 #define LED2_R	4
 #define LED3_R	2
@@ -128,52 +138,6 @@
 #define LED10_G  21
 #define LED11_G  19
 #define LED12_G  17
-
-#elif defined (TB_11P_DEVICE)
-
-#define LED1_R	6
-#define LED2_R	4
-#define LED3_R	2
-#define LED4_R	14
-#define LED5_R	12
-#define LED6_R	10
-#define LED7_R	8
-#define LED8_R	22
-#define LED9_R	20
-#define LED10_R  18
-#define LED11_R  16
-
-#define LED1_G	7
-#define LED2_G	5
-#define LED3_G	3
-#define LED4_G	15
-#define LED5_G	13
-#define LED6_G	11
-#define LED7_G	9
-#define LED8_G	23
-#define LED9_G	21
-#define LED10_G	19
-#define LED11_G	17
-
-//two following leds is not used. Create it only to avoid additional logic
-//to compensate buttons and leds number difference in due the pedal
-#define LED12_R	0
-#define LED12_G	1
-
-#elif defined (TB_5_DEVICE)
-
-#define LED1_R	6
-#define LED2_R	4
-#define LED3_R	2
-#define LED4_R	12
-#define LED5_R	0
-#define LED1_G	7
-#define LED2_G	5
-#define LED3_G	3
-#define LED4_G	13
-#define LED5_G	1
-
-#endif
 
 //shift registers and LEDS description
 #define LEDS_NUM FOOT_BUTTONS_NUM
