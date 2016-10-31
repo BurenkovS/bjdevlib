@@ -139,7 +139,7 @@
 #define LED11_G  19
 #define LED12_G  17
 
-//shift registers and LEDS description
+//shift registers and LEDS description for LEDs near the buttons
 #define LEDS_NUM FOOT_BUTTONS_NUM
 #define COLORS_PER_LED 2
 #define TOTAL_LED_PINS (LEDS_NUM*COLORS_PER_LED)
@@ -153,5 +153,23 @@
 
 #define LED_OE_PORT		PORTF
 #define LED_OE_PIN		5
+
+//shift registers and LEDS description for LEDs on build in expression pedal
+#define PEDAL_LEDS_NUM 48
+#define PEDAL_REGS_NUM 6
+
+#define PEDAL_TRICOLOR_VIRTUAL_LEDS_NUM 16
+#define PEDAL_TRICOLOR_VIRTUAL_LEDS_NUM_IN_LINE (PEDAL_TRICOLOR_VIRTUAL_LEDS_NUM/2)
+
+//shift registers interface
+#define PEDAL_LED_CLK_PORT PORTE
+#define PEDAL_LED_CLK_PIN 6
+
+#define PEDAL_LED_DATA_PORT PORTE
+#define PEDAL_LED_DATA_PIN 7
+
+#define PEDAL_LED_OE_PORT PORTE
+#define PEDAL_LED_OE_PIN 5
+
 
 #endif /* pinout_h_ */

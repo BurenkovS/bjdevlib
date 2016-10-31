@@ -24,5 +24,8 @@ void initBjDevLib()
 	initMidi();
 	initLed();
 	initExpression();
+#if defined (TB_6P_DEVICE) || defined(TB_11P_DEVICE)
+	initPedalLed();
+#endif
 	sei();
 } 

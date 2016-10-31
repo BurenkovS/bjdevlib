@@ -19,6 +19,7 @@
 #include "midi.h"
 #include "led.h"
 #include "expression.h"
+#include "pedal_led.h"
 
 /*
  * @brief	System initialization 
