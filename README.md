@@ -1,7 +1,7 @@
 # bjdevlib
 BJ Devices TB series MIDI controller  open source library (bjdevlib) provide functionality for custom controller firmware creation.
 BJ Devices TB series MIDI controllers based on ATmega64 microcontroller. Library was created in Atmel Studio. 
-Currently there are two versions of controllers - TB-12 (12 footbuttons) and TB-5(5 buttons).
+Currently there are two versions of controllers - TB-12 (12 footbuttons), TB-5(5 buttons), TB-8(8 buttons), TB-6P(6 buttons and expression pedal) and TB-11P(11 buttons and expression pedal).
 All modification builds on same hardware, only buttons connection is differ, so bjdevlib works for all devices.
 You can find out wiring diagram:
 for tb-12 http://bjdevices.com/manuals/tb12_diagram.pdf
@@ -15,19 +15,17 @@ How to start:
 
 2. Create new Atmel Studio project (GCC C Executable Project, ATmega64 device)
 
-3. Go to project properties -> AVR/GNU C Compiler -> Symbols,
-add symbol TB_12_DEVICE or TB_5_DEVICE(depends of your model), add F_CPU=8000000UL symbol for all configurations
+3. Go to project properties -> AVR/GNU C Compiler -> Symbols, add symbol TB_12_DEVICE or TB_5_DEVICE(depends of your model), add F_CPU=8000000UL symbol for all configurations
 
 4. Go to AVR/GNU C Compiler -> Directories, add include path for "bjdevib/tbseries/include" folder for all configuratoin
 
-4a. If you want to use same LCD library, as in example, add "lcdlib" to include path for all configurations
+ 4.1 If you want to use same LCD library, as in example, add "lcdlib" to include path for all configurations
 
 5. In project explorer create folder "bjdevilib", add existing items - all files from "bjdevib/tbseries/src" folder
 
-5a. If you want to use same LCD library, also add "lcd_lib.c" from "lcdlib" folder
+ 5.1 If you want to use same LCD library, also add "lcd_lib.c" from "lcdlib" folder
 
-6. Copy code from examples to your main file, compile it to make sure that everything is configured correctly. 
-You can also upload compiled hex file to hardware, check BJ devices TB-series manual to update firmware (chapter "Firmware Update") http://bjdevices.com/manuals/manualtb12_en.pdf 
+6. Copy code from examples to your main file, compile it to make sure that everything is configured correctly. You can also upload compiled hex file to hardware, check BJ devices TB-series manual to update firmware (chapter "Firmware Update") http://bjdevices.com/manuals/manualtb12_en.pdf 
 
 7. Learn example to understand how to work with library
 
