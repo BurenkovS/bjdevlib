@@ -1,9 +1,12 @@
 /*
- * TravelBoxReadUniqueId.c
+ * BJ Devices Travel Box series midi controller library
+ * @file	TravelBoxReadUniqueId.c
+ * 
+ * @brief	This example explain how to read unique device ID and compare it with user provided ID to implement commercial firmware
  *
- * Created: 05.11.2016 15:47:42
- *  Author: Admin
- */ 
+ * Software is provided "as is" without express or implied warranty.
+ * BJ Devices 2016
+ */
 
 
 #include "unique_id.h"
