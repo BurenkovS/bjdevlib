@@ -24,9 +24,4 @@ void initTimer();
  */
 uint32_t getTicks();
 
-#include <stdint.h>
-
-
-
-
 #endif /* timer_h_ */

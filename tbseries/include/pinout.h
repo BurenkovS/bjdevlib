@@ -21,6 +21,8 @@
 #ifndef pinout_h_
 #define pinout_h_
 
+#include <avr/io.h>
+
 //Buttons
 
 #ifdef TB_12_DEVICE
@@ -171,5 +173,10 @@
 #define PEDAL_LED_OE_PORT PORTE
 #define PEDAL_LED_OE_PIN 5
 
+//DS2411 Silicon Serial Number
+#define SERIAL_NIMBER_IC_PORT PORTB
+#define SERIAL_NIMBER_IC_IN PINB
+#define SERIAL_NIMBER_IC_DDR DDRB
+#define SERIAL_NIMBER_IC_PIN 6
 
 #endif /* pinout_h_ */
