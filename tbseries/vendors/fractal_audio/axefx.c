@@ -129,5 +129,5 @@ uint8_t axefxGetAllEffectBlockState(AxeFxEffectBlockState* blockStates, uint8_t*
 void axefxGetPresetName(char* name, uint8_t maxSize, uint8_t* sysEx)
 {
 	strncpy(name, (char*)(sysEx + pgm_read_byte(&fuctionPayloadOffsetBytes)), maxSize);
-	*(name + maxSize) = '\0';
+	*(name + maxSize - 1) = '\0';
 }

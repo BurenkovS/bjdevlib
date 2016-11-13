@@ -107,7 +107,7 @@
 #define EXP_P1_PIN	3
 
 #define EXP_P2_PORT	PORTF
-#define EXP_P2_PIN	3
+#define EXP_P2_PIN	4
 
 #define EXP_P_OB_PORT	PORTF
 #define EXP_P_OB_PIN	6
