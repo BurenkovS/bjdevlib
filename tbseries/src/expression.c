@@ -12,6 +12,7 @@
 #include "adc.h"
 #include "pinout.h"
 #include "portio.h"
+#include "log.h"
 #include <avr/pgmspace.h>
 
 #define MAX_PEDALS 3
@@ -21,13 +22,58 @@ const ioPort padalsArray[MAX_PEDALS] PROGMEM = {
 	{ &EXP_P2_PORT, EXP_P2_PIN },
 	{ &EXP_P_OB_PORT, EXP_P_OB_PIN }};
 
-
-#define EXP_P1_ADC_CHAN 3
-#define EXP_P2_ADC_CHAN 4
-#define EXP_P_ONBPAR_ADC_CHAN 6
+#define EXP_P1_ADC_CHAN EXP_P1_PIN
+#define EXP_P2_ADC_CHAN EXP_P2_PIN
+#define EXP_P_ONBPAR_ADC_CHAN EXP_P_OB_PIN
 
 static const uint8_t adcChanArray[MAX_PEDALS] = {EXP_P1_ADC_CHAN, EXP_P2_ADC_CHAN, EXP_P_ONBPAR_ADC_CHAN};
 static uint8_t pedalsPrevValue[MAX_PEDALS] = {0, 0, 0};
+
+
+//Use hysteresis function to avoid bouncing on the boundary of values
+static uint8_t direction[3] = {0,0,0};
+static const uint8_t threshold = 1;
+static uint16_t lastVal[3] = {0,0,0};
+	
+uint8_t hysteresis(uint8_t input, uint8_t channel)
+{
+	if (direction[channel] == 0)//go down
+	{
+		if ((uint16_t)input > lastVal[channel] + threshold)
+		{
+			direction[channel] = 1;//go up
+			lastVal[channel] = (uint16_t)input;
+			return input;
+		}
+		else if((uint16_t)input < lastVal[channel])
+		{
+			lastVal[channel] = (uint16_t)input;
+			return input;
+		}
+		else
+		{
+			return lastVal[channel];
+		}
+	}
+	else//go up
+	{
+		if ((uint16_t)input < lastVal[channel] - threshold)
+		{
+			direction[channel] = 0;//go down
+			lastVal[channel] = (uint16_t)input;
+			return input;
+		}
+		else if(input >= (uint16_t)lastVal[channel])
+		{
+			lastVal[channel] = (uint16_t)input;
+			return input;
+		}
+		else
+		{
+			return lastVal[channel];
+		}
+	}
+}
 	
 void initExpression()
 {
@@ -41,15 +87,14 @@ void initExpression()
 		tmpPort.pin_ = pgm_read_byte(&(padalsArray[i].pin_));
 		tmpPort.portReg_ = (volatile uint8_t*)pgm_read_word(&(padalsArray[i].portReg_));
 		initInput(&tmpPort, 1);
-		
-		pedalsPrevValue[i] = (adcRead8MsbBit(adcChanArray[i]) >> 1);
 	}
 	
 }
 
 uint8_t expGetPedalPosition(uint8_t pedalNumber)
 {
-	return (adcRead8MsbBit(adcChanArray[pedalNumber]) >> 1);
+	//hysteresis working with values from 0 to 255, but pedal position in range from 0 to 127
+	return (hysteresis(adcRead8MsbBit(adcChanArray[pedalNumber]), pedalNumber)) >> 1;
 }
 
 //callback

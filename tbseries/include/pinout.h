@@ -110,7 +110,7 @@
 #define EXP_P2_PIN	4
 
 #define EXP_P_OB_PORT	PORTF
-#define EXP_P_OB_PIN	6
+#define EXP_P_OB_PIN	2
 
 
 

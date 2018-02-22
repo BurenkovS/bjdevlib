@@ -23,21 +23,16 @@
 #define MIDI_CHANNEL 0
 
 //Control change numbers for expression pedal 1 and expression pedal 2
-const uint8_t pedalCCNumbers[2] = {0x1, 0x3};
+const uint8_t pedalCCNumbers[3] = {0x1, 0x3, 0x7};
 
 //Current pedal positions
-uint8_t pedalPositions[2] = {0x0, 0x0};
+uint8_t pedalPositions[3] = {0x0, 0x0, 0x0};
 	
 void updateScreen()
 {
-	uint8_t pedal1ToPrint[3] = {0x20,0x20,0x20};
-	uint8_t pedal2ToPrint[3] = {0x20,0x20,0x20};
-	
-	itoa(pedalPositions[0], (char*)pedal1ToPrint, 10);
-	itoa(pedalPositions[1], (char*)pedal2ToPrint, 10);	
-	
-	LCDWriteIntXY(9, 0, pedalPositions[0], 3);
-	LCDWriteIntXY(9, 1, pedalPositions[1], 3);
+	LCDWriteIntXY(3, 0, pedalPositions[0], 3);
+	LCDWriteIntXY(11, 0, pedalPositions[1], 3);
+	LCDWriteIntXY(3, 1, pedalPositions[2], 3);
 }	
 
 void expPedalsCallback(PedalNumber pedalNumber, uint8_t pedalPosition)
@@ -65,12 +60,14 @@ int main(void)
 	//compare it with previous value and process changes
 	expRegisterPedalChangePositionCallback(expPedalsCallback);
 	
-	LCDWriteStringXY(0, 0,"Pedal 1 : ");
-	LCDWriteStringXY(0, 1,"Pedal 2 : ");
+	LCDWriteStringXY(0, 0,"P1: ");
+	LCDWriteStringXY(8, 0,"P2: ");
+	LCDWriteStringXY(0, 1,"P3: ");
 	
 	//manual read current pedal position
 	pedalPositions[0] = expGetPedalPosition(EXP_PEDAL1);
 	pedalPositions[1] = expGetPedalPosition(EXP_PEDAL2);
+	pedalPositions[3] = expGetPedalPosition(EXP_PEDAL_ONBOARD);
 	
 	//print current pedal positions
 	updateScreen();
