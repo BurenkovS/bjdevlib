@@ -67,7 +67,7 @@ int main(void)
 	//manual read current pedal position
 	pedalPositions[0] = expGetPedalPosition(EXP_PEDAL1);
 	pedalPositions[1] = expGetPedalPosition(EXP_PEDAL2);
-	pedalPositions[3] = expGetPedalPosition(EXP_PEDAL_ONBOARD);
+	pedalPositions[2] = expGetPedalPosition(EXP_PEDAL_ONBOARD);
 	
 	//print current pedal positions
 	updateScreen();
