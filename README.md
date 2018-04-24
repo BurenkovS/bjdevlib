@@ -1,7 +1,7 @@
 # bjdevlib
-BJ Devices TB series MIDI controller  open source library (bjdevlib) provide functionality for custom controller firmware creation.
+BJ Devices TB series MIDI controller(www.bjdevices.com)  open source library (bjdevlib) provide functionality for custom controller firmware creation.
 BJ Devices TB series MIDI controllers based on ATmega64 microcontroller. Library was created in Atmel Studio. 
-Currently there are two versions of controllers - TB-12 (12 footbuttons), TB-5(5 buttons), TB-8(8 buttons), TB-6P(6 buttons and expression pedal) and TB-11P(11 buttons and expression pedal).
+Currently there are 5 models of controllers - TB-12 (12 footbuttons), TB-5(5 buttons), TB-8(8 buttons), TB-6P(6 buttons and expression pedal) and TB-11P(11 buttons and expression pedal).
 All modification builds on same hardware, only buttons connection is differ, so bjdevlib works for all devices.
 You can find out wiring diagram:
 for tb-12 http://bjdevices.com/manuals/tb12_diagram.pdf
