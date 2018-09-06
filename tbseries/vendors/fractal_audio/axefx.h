@@ -39,12 +39,28 @@ typedef enum AxeFxFunctionId
 	,AXEFX_GET_PRESET_EFFECT_BLOCKS_AND_CC_AND_BYPASS_STATE = 0x0E
 	,AXEFX_GET_PRESET_NAME			= 0x0F
 	,AXEFX_TEMPO_BEAT				= 0x10
+	,AXEFX_GET_SET_BLOCK_XY			= 0x11
 	,AXEFX_GET_PRESET_NUMBER		= 0x14
 	,AXEFX_GET_ROUTING_GRID_LAYOUT	= 0x20
+	,AXEFX_FRONT_PANEL_CHANGE_DETECTED = 0x21
 	,AXEFX_LOOPER_STATUS_ENABLE		= 0x23
 	,AXEFX_SET_SCENE_NUMBER			= 0x29
+	,AXEFX_MULTIPURPOSE_RESPONSE	= 0x64
 	
 }AxeFxFunctionId;
+
+//looper state bits
+typedef enum AxeFxLooperBit
+{
+	AXEFX_LOOPER_BIT_RECORD = 0
+	,AXEFX_LOOPER_BIT_PLAY
+	,AXEFX_LOOPER_BIT_ONCE
+	,AXEFX_LOOPER_BIT_OVERDUB
+	,AXEFX_LOOPER_BIT_REVERSE
+	,AXEFX_LOOPER_BIT_HALF
+	,AXEFX_LOOPER_BIT_UNDO
+	
+}AxeFxLooperBit;
 
 /*
  * MIDI_GET_PRESET_EFFECT_BLOCKS_AND_CC_AND_BYPASS_STATE response format
@@ -52,9 +68,10 @@ typedef enum AxeFxFunctionId
  */
 typedef struct AxeFxEffectBlockState
 {
-    bool isEnabled_;		//true = Enabled, false = Bypassed
-    bool isX_;				//X/Y state : true = X, false = Y
-    uint8_t iaCcNumber_;	//CC number assigned to this effect
+	bool isEnabled_;		//true = Enabled, false = Bypassed
+	bool isX_;				//X/Y state : true = X, false = Y
+	uint8_t iaCcNumber_;	//CC number assigned to this effect
+	uint8_t iaXYCcNumber_;  //XY switch CC number assigned to this effect
 	uint8_t effectId_;		//Effect ID
 }AxeFxEffectBlockState;
 
@@ -68,6 +85,26 @@ typedef struct AxeFxEffectTunerInfo
 	uint8_t stringNumber_;	//String number (0=high E string; 5=low E string)
 	uint8_t tuneData_;		//Tuner data (value of 63 indicates 'perfectly in tune')
 }AxeFxEffectTunerInfo;
+
+/*
+ * AXEFX_LOOPER_STATUS_ENABLE response format
+ * response consist of several blocks of following structure  
+ */
+typedef struct AxeFxLooperInfo
+{
+	uint8_t status;      //Looper Status Bits (.status & AXEFX_LOOPER_BIT_RECORD)
+	uint8_t position;    //Looper Position (range: 0 to 99)
+}AxeFxLooperInfo;
+
+/*
+ * AXEFX_MULTIPURPOSE_RESPONSE response format
+ * response consist of several blocks of following structure
+ */
+typedef struct AxeFxMultipurposeResponseInfo
+{
+	uint8_t functionId; //Function ID
+	uint8_t code;       //Response code
+}AxeFxMultipurposeResponseInfo;
 
 /*
  * @brief	Send function request to axe fx. If request contain any payload expect then functionId,
@@ -86,6 +123,20 @@ void axefxSendFunctionRequest(AxeFxModelId modelId, AxeFxFunctionId functionId, 
  * @param	*sysEx -		pointer to SysEx message to parse 
  */ 
 void axefxParseTunerInfo(AxeFxEffectTunerInfo* tunerInfo, uint8_t* sysEx);
+
+/*
+ * @brief	Parse SysEx message and fill looperInfo structure, if SysEx is valid AXEFX_LOOPER_STATUS_ENABLE message
+ * @param	*looperInfo -	pointer to looperInfo structure which will contain tuner info
+ * @param	*sysEx -		pointer to SysEx message to parse
+ */
+void axefxParseLooperInfo(AxeFxLooperInfo *looperInfo, uint8_t *sysEx);
+
+/*
+ * @brief	Parse SysEx message and fill responseInfo structure, if SysEx is valid AXEFX_MULTIPURPOSE_RESPONSE message
+ * @param	*responseInfo -	pointer to tunerInfo structure which will contain response info
+ * @param	*sysEx -		pointer to SysEx message to parse
+ */
+void axefxParseMultipurposeResponseInfo(AxeFxMultipurposeResponseInfo *responseInfo, uint8_t *sysEx);
 
 /*
  * @brief	Check if SysEx have Fractal Audio manufacturer id (0x00 0x01 0x74)
@@ -147,5 +198,23 @@ uint8_t axefxGetAllEffectBlockState(AxeFxEffectBlockState* blockStates, uint8_t*
  * @param	*sysEx -	pointer to SysEx message to parse
  */ 
 void axefxGetPresetName(char* name, uint8_t maxSize, uint8_t* sysEx);
+
+
+//following functions using for process AXEFX_SET_SCENE_NUMBER message
+
+/*
+ * @brief	Get scene number from SysEx
+ * @param	*sysEx -	pointer to SysEx message to parse
+ */
+uint8_t axefxGetSceneNumber(uint8_t *sysEx);
+
+
+//following functions using for process AXEFX_GET_PRESET_NUMBER message
+
+/*
+ * @brief	Get preset number from SysEx
+ * @param	*sysEx -	pointer to SysEx message to parse
+ */
+uint16_t axefxGetPresetNumber(uint8_t *sysEx);
 
 #endif /* axefx_h_ */
