@@ -36,6 +36,11 @@ typedef enum PedalLedColor
  */
 void initPedalLed();
 
+/*
+ * Send data from internal buffer to shift register
+ */
+void ledPedalSend();
+
 
 /*
  * @brief	Set single LED color in internal buffer and optionally send it to shift register

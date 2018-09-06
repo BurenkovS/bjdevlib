@@ -90,7 +90,7 @@ static uint16_t midiInRxCnt = 0;
 static uint8_t lastStatus = UNKNOWN_STATUS;
 static uint16_t lastSysExLength = 0;
 
-bool parce(uint8_t data)
+bool parse(uint8_t data)
 {
 	if(midiInRxCnt == 0)
 	{
@@ -186,7 +186,7 @@ bool midiRead()
 {
 	while(!uart0IsBufferEmpty())
 	{
-		if(parce(uart0GetChar()))
+		if(parse(uart0GetChar()))
 		{
 			runCallbacks();
 			return true;

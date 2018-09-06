@@ -229,7 +229,7 @@ void initConnectionToKpa()
 						//so we disable to send FE ans sensing by set KPA_BEACON_FLAG_NOFE and KPA_BEACON_FLAG_NOCTR.
 						//But it is not good practice in real life.
 						//In real life you should to keep track of the connection is good
-						//by monitoring “Sensing” message which comes about every 500ms
+						//by monitoring "Sensing" message which comes about every 500ms
 						//as long as the time lease is valid
 						| KPA_BEACON_FLAG_NOFE
 						| KPA_BEACON_FLAG_NOCTR

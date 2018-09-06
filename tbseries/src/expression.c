@@ -17,7 +17,7 @@
 
 #define MAX_PEDALS 3
 
-const ioPort padalsArray[MAX_PEDALS] PROGMEM = {
+const ioPort pedalsArray[MAX_PEDALS] PROGMEM = {
 	{ &EXP_P1_PORT, EXP_P1_PIN },
 	{ &EXP_P2_PORT, EXP_P2_PIN },
 	{ &EXP_P_OB_PORT, EXP_P_OB_PIN }};
@@ -84,8 +84,8 @@ void initExpression()
 	
 	for(i = 0; i < MAX_PEDALS; ++i)
 	{	
-		tmpPort.pin_ = pgm_read_byte(&(padalsArray[i].pin_));
-		tmpPort.portReg_ = (volatile uint8_t*)pgm_read_word(&(padalsArray[i].portReg_));
+		tmpPort.pin_ = pgm_read_byte(&(pedalsArray[i].pin_));
+		tmpPort.portReg_ = (volatile uint8_t*)pgm_read_word(&(pedalsArray[i].portReg_));
 		initInput(&tmpPort, 1);
 	}
 	
