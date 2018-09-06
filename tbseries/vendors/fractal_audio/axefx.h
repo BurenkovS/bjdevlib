@@ -82,7 +82,7 @@ void axefxSendFunctionRequest(AxeFxModelId modelId, AxeFxFunctionId functionId, 
 
 /*
  * @brief	Parse SysEx message and fill tunerInfo structure, if SysEx is valid AXEFX_TUNER_INFO message
- * @param	*tunerInfo -	pointer to tunerInfo structure which will cotain tuner info  
+ * @param	*tunerInfo -	pointer to tunerInfo structure which will contain tuner info  
  * @param	*sysEx -		pointer to SysEx message to parse 
  */ 
 void axefxParseTunerInfo(AxeFxEffectTunerInfo* tunerInfo, uint8_t* sysEx);
@@ -118,7 +118,7 @@ uint8_t axefxGetEffectBlockStateNumber(uint8_t* sysEx);
  * @brief	Parse single effect block (5-byte chunk) from message. 
  *			Function does not perform any validation of message structure
  *			or function ID,	it is a user responsibility
- * @param	*blockState -	pointer to AxeFxEffectBlockState stucture to fill data
+ * @param	*blockState -	pointer to AxeFxEffectBlockState structure to fill data
  * @param	blockNum -		chunk sequence number in the message
  * @param	*sysEx -		pointer to SysEx message to parse
  * @return	true if blockNum exists in this SysEx message  
@@ -129,7 +129,7 @@ bool axefxGetSingleEffectBlockState(AxeFxEffectBlockState* blockState, uint8_t b
  * @brief	Parse all effect blocks (5-byte chunks) from message. 
  *			Function does not perform any validation of message structure
  *			or function ID,	it is a user responsibility
- * @param	*blockState -	pointer to begin of array of AxeFxEffectBlockState stuctures to fill data.
+ * @param	*blockState -	pointer to begin of array of AxeFxEffectBlockState structures to fill data.
  *							User must take care about array size, it must be larger or equal than maximum effects in preset
  * @param	*sysEx -		pointer to SysEx message to parse
  * @return	number of blocks was parsed  
@@ -140,7 +140,7 @@ uint8_t axefxGetAllEffectBlockState(AxeFxEffectBlockState* blockStates, uint8_t*
 //following functions using for process AXEFX_GET_PRESET_NAME message
 
 /*
- * @brief	Copy preset name from SysEx to user buffer. The behaivour is same as strncpy(), 
+ * @brief	Copy preset name from SysEx to user buffer. The behaviour is same as strncpy(), 
 			but null symbol will always added in the last position of user buffer in any case  
  * @param	*name -		pointer to user buffer
  * @param	maxSize -	maximum preset name length. Character above this value will dropped

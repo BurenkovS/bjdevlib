@@ -204,7 +204,7 @@ uint16_t kpaGetAllMultiExtParameterValues(uint32_t* userBuffer, uint8_t* sysEx);
 bool kpaGetMultiExtParameterValue(uint8_t valueNum, uint32_t* userBuffer, uint8_t* sysEx);
 
 /*
- * @brief	Copy string from SysEx to user buffer. The behaivour is same as strncpy(), 
+ * @brief	Copy string from SysEx to user buffer. The behaviour is same as strncpy(), 
  *			but null symbol will always added in the last position of user buffer in any case;
  *			Note the corresponding parameter address is NOT extended  
  * @param	*str -		pointer to user buffer
@@ -214,7 +214,7 @@ bool kpaGetMultiExtParameterValue(uint8_t valueNum, uint32_t* userBuffer, uint8_
 void kpaGetStringParameter(char* str, uint8_t maxSize, uint8_t* sysEx);
 
 /*
- * @brief	Copy extended string from SysEx to user buffer. The behaivour is same as strncpy(), 
+ * @brief	Copy extended string from SysEx to user buffer. The behaviour is same as strncpy(), 
  *			but null symbol will always added in the last position of user buffer in any case;
  *			Note the corresponding parameter address is extended!  
  * @param	*str -		pointer to user buffer
@@ -230,7 +230,7 @@ void kpaGetExtStringParameter(char* str, uint8_t maxSize, uint8_t* sysEx);
  *			of missing packets or broken cables. It is being sent every 500ms
  *			as long as the time lease is valid(see kpaSendBeacon function).
  *			It incorporates an increasing 7-bit counter. At 127 the counter wraps to 0.
- *			This mechanism can be suppressed by setting the “NOCTR” bit 
+ *			This mechanism can be suppressed by setting the NOCTR bit 
  *			in the beacon message. If the client side detects a missing sensing message,
  *			the INIT bit could be set again to request the full set again
  * @return	7-bit counter from  "active sensing" message
@@ -244,7 +244,7 @@ uint8_t kpaGetActiveSensingCounter(uint8_t* sysEx);
 #define KPA_BEACON_FLAG_ECHO        0x04//If set, parameters are sent back even if they were set via MIDI IN
 #define KPA_BEACON_FLAG_NOFE        0x08//if set, the KPA will stop sending 0xFE when protocol is initiated
 #define KPA_BEACON_FLAG_NOCTR       0x10//if set, the KPA will not send back the periodic KPA_PARAM_ACTIVE_SENSING_SIGNAL
-#define KPA_BEACON_FLAG_TUNEMODE    0x20//if set, the Tuning information is only sent in Tuner Mode, otherwise it’s being sent all the time
+#define KPA_BEACON_FLAG_TUNEMODE    0x20//if set, the Tuning information is only sent in Tuner Mode, otherwise it's being sent all the time
 
 
 //KPA functions code
