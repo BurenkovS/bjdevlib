@@ -60,6 +60,16 @@ void axefxParseTunerInfo(AxeFxEffectTunerInfo* tunerInfo, uint8_t* sysEx)
 	memcpy(tunerInfo, sysEx + pgm_read_byte(&functionPayloadOffsetBytes), sizeof(AxeFxEffectTunerInfo));
 }
 
+void axefxParseLooperInfo(AxeFxLooperInfo *looperInfo, uint8_t *sysEx)
+{
+	memcpy(looperInfo, sysEx + pgm_read_byte(&functionPayloadOffsetBytes), sizeof(AxeFxLooperInfo));
+}
+
+void axefxParseMultipurposeResponseInfo(AxeFxMultipurposeResponseInfo *responseInfo, uint8_t *sysEx)
+{
+	memcpy(responseInfo, sysEx + pgm_read_byte(&functionPayloadOffsetBytes), sizeof(AxeFxMultipurposeResponseInfo));
+}
+
 bool axeFxCheckFractalManufId(uint8_t* sysEx)
 {
 	return (FRACTAL_AUDIO_MANF_ID == midiGetSysExManufacturerId(sysEx));
@@ -85,6 +95,7 @@ static void fillEffectBlockStructFromGen2(AxeFxEffectBlockState* structToFill, u
 	structToFill->isEnabled_ = ((blockInSysEx[0] & 0x01) == 0x00) ? false : true;
 	structToFill->isX_ = ((blockInSysEx[0] & 0x02) == 0x00) ? false : true;
 	structToFill->iaCcNumber_ = ((blockInSysEx[1] >> 1) | blockInSysEx[2] << 6) & 0x7F;
+	structToFill->iaXYCcNumber_ = ((blockInSysEx[2] & 0x7C) >> 2) | ((blockInSysEx[3] & 0x07) << 5);
 	structToFill->effectId_ = ((blockInSysEx[1] >> 3) | blockInSysEx[2] << 4) & 0x7F;
 }
 
@@ -130,4 +141,16 @@ void axefxGetPresetName(char* name, uint8_t maxSize, uint8_t* sysEx)
 {
 	strncpy(name, (char*)(sysEx + pgm_read_byte(&functionPayloadOffsetBytes)), maxSize);
 	*(name + maxSize - 1) = '\0';
+}
+
+uint8_t axefxGetSceneNumber(uint8_t *sysEx)
+{
+	uint8_t *scene = sysEx + pgm_read_byte(&functionPayloadOffsetBytes);
+	return *scene & 0x07;
+}
+
+uint16_t axefxGetPresetNumber(uint8_t *sysEx)
+{
+	uint8_t *blockInSysEx = sysEx + pgm_read_byte(&functionPayloadOffsetBytes);
+	return (blockInSysEx[1] & 0x7F) | (blockInSysEx[0] & 0x7F) << 7;
 }
