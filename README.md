@@ -17,13 +17,13 @@ How to start:
 
 3. Go to project properties -> AVR/GNU C Compiler -> Symbols, add symbol TB_12_DEVICE or TB_5_DEVICE (depends of your model), add F_CPU=8000000UL symbol for all configurations
 
-4. Go to AVR/GNU C Compiler -> Directories, add include path for "bjdevib/tbseries/include" folder for all configuratoin
+4. Go to AVR/GNU C Compiler -> Directories, add include path for "bjdevlib/tbseries/include" folder for all configuratoin
 
  4.1 If you want to use same LCD library, as in example, add "lcdlib" to include path for all configurations
 
-5. In project explorer create folder "bjdevilib", add existing items - all files from "bjdevib/tbseries/src" folder
+5. In project explorer create folder "bjdevlib", add existing items - all files from "bjdevlib/tbseries/src" folder
 
- 5.1 If you want to use same LCD library, also add "lcd_lib.c" from "lcdlib" folder
+ 5.1 If you want to use same LCD library, also add "lcd_tb.c" from "lcdlib" folder
 
 6. Copy code from examples to your main file, compile it to make sure that everything is configured correctly. You can also upload compiled hex file to hardware, check BJ devices TB-series manual to update firmware (chapter "Firmware Update") http://bjdevices.com/manuals/manualtb12_en.pdf 
 
