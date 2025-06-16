@@ -91,7 +91,7 @@ void initExpression()
 	
 }
 
-uint8_t expGetPedalPosition(uint8_t pedalNumber)
+uint8_t expGetPedalPosition(PedalNumber pedalNumber)
 {
 	//hysteresis working with values from 0 to 255, but pedal position in range from 0 to 127
 	return (hysteresis(adcRead8MsbBit(adcChanArray[pedalNumber]), pedalNumber)) >> 1;
