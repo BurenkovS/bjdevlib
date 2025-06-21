@@ -37,6 +37,22 @@ void midiSendProgramChange(uint8_t progNum, uint8_t chanNum);
 void midiSendControlChange(uint8_t ctrlNum, uint8_t val, uint8_t chanNum);
 
 /*
+ * @brief	Send note on midi message
+ * @param	noteNum - midi note number
+ * @param	velocity - velocity value
+ * @param	chanNum - midi channel
+ */
+void midiSendNoteOn(uint8_t noteNum, uint8_t velocity, uint8_t chanNum);
+
+/*
+ * @brief	Send note off midi message
+ * @param	noteNum - midi note number
+ * @param	velocity - velocity value
+ * @param	chanNum - midi channel
+ */
+void midiSendNoteOff(uint8_t noteNum, uint8_t velocity, uint8_t chanNum);
+
+/*
  * @brief	Send system exclusive midi message.  
  *			Start byte (F0 hex) and an end byte (F7 hex) will automatically included and should not passed in payload 
  * @param	length - data length
@@ -139,6 +155,8 @@ uint32_t midiGetSysExManufacturerId(uint8_t* sysEx);
 #define UNKNOWN_STATUS	0x00 //Unknown
 #define PC_STATUS		0xC0 //Program change midi message status
 #define CC_STATUS		0xB0 //Control change midi message status
+#define NOTE_ON_STATUS	0x90 //Note on midi message status
+#define NOTE_OFF_STATUS	0x80 //Note off midi message status
 #define SYSEX_STATUS	0xF0 //System exclusive
 #define ACTIVE_SENSE	0xFE //Active sense
 
