@@ -17,7 +17,7 @@ How to start:
 
 3. Go to project properties -> AVR/GNU C Compiler -> Symbols, add symbol TB_12_DEVICE or TB_5_DEVICE (depends of your model), add F_CPU=8000000UL symbol for all configurations
 
-4. Go to AVR/GNU C Compiler -> Directories, add include path for "bjdevlib/tbseries/include" folder for all configuratoin
+4. Go to AVR/GNU C Compiler -> Directories, add include path for "bjdevlib/tbseries/include" folder for all configuration
 
  4.1 If you want to use same LCD library, as in example, add "lcdlib" to include path for all configurations
 
