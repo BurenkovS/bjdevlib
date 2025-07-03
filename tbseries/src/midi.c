@@ -33,6 +33,20 @@ void midiSendControlChange(uint8_t ctrlNum, uint8_t val, uint8_t chanNum)
 	uart0PutChar(0x7F & val);
 }
 
+void midiSendNoteOn(uint8_t noteNum, uint8_t velocity, uint8_t chanNum)
+{
+	uart0PutChar(NOTE_ON_STATUS | (0x0F & chanNum));
+	uart0PutChar(0x7F & noteNum);
+	uart0PutChar(0x7F & velocity);
+}
+
+void midiSendNoteOff(uint8_t noteNum, uint8_t velocity, uint8_t chanNum)
+{
+	uart0PutChar(NOTE_OFF_STATUS | (0x0F & chanNum));
+	uart0PutChar(0x7F & noteNum);
+	uart0PutChar(0x7F & velocity);
+}
+
 void midiSendSysEx(uint16_t length, uint8_t* data)
 {
 	uint32_t i;
