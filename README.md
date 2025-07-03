@@ -62,11 +62,7 @@ If you turn on logger, you should specify severity level. All log messages with 
 
 Creating commercial firmware:
 
-BJ Devices TB series Gen2 midi controllers contain DS2411 Silicon Serial Number, and user can see unique ID in the menu of default firmware. Firmware developer able to lock firmware on particular device, using this ID. Firmware just need to compare actual device ID with user provided ID and run only if IDs matched. Here is example of roadmap:
-
- 1. User placed order on website, made payment and send ID to you.
- 2. You can automatically or manual compile sources with ID as predefined symbol, your firmware should compare ID on startup
- 3. Compiled binaries immediately sends to user. User install firmware without housing demolition via free bootloader. No need to burn physical IC and send it to user. All processes, including purchase, compilation and delivery to user, can be highly automated on web server
+BJ Devices TB series Gen2 midi controllers contain DS2411 Silicon Serial Number, and user can see unique ID in the menu of default firmware. Firmware developer able to lock firmware on particular device, using this ID. 
 
 You can see ID reading and comparsion example in library "examples" folder
 
